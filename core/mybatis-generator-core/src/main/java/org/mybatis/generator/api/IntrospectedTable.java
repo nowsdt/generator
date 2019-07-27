@@ -89,7 +89,17 @@ public abstract class IntrospectedTable {
         ATTR_BLOB_COLUMN_LIST_ID,
         ATTR_MYBATIS3_UPDATE_BY_EXAMPLE_WHERE_CLAUSE_ID,
         ATTR_MYBATIS3_SQL_PROVIDER_TYPE,
-        ATTR_MYBATIS_DYNAMIC_SQL_SUPPORT_TYPE
+        ATTR_MYBATIS_DYNAMIC_SQL_SUPPORT_TYPE,
+        ATTR_BATCH_INSERT_STATEMENT_ID,
+        ATTR_BATCH_UPDATE_STATEMENT_ID,
+        ATTR_WHERE_CLAUSE_STATEMENT_ID,
+        ;
+    //     TODO   https://blog.csdn.net/limclg/article/details/80816923
+        /**
+         * 1. 插入返回主键 mysql oracle
+         * 2. 批量操作
+         * 3. 注释
+         */
     }
 
     protected TableConfiguration tableConfiguration;
@@ -115,7 +125,7 @@ public abstract class IntrospectedTable {
     protected Map<String, Object> attributes;
 
     /** Internal attributes are used to store commonly accessed items by all code generators. */
-    protected Map<IntrospectedTable.InternalAttribute, String> internalAttributes;
+    protected Map<InternalAttribute, String> internalAttributes;
 
     /**
      * Table remarks retrieved from database metadata.
@@ -490,19 +500,22 @@ public abstract class IntrospectedTable {
         setSelectAllStatementId("selectAll"); //$NON-NLS-1$
         setSelectByExampleStatementId("selectByExample"); //$NON-NLS-1$
         setSelectByExampleWithBLOBsStatementId("selectByExampleWithBLOBs"); //$NON-NLS-1$
-        setSelectByPrimaryKeyStatementId("selectByPrimaryKey"); //$NON-NLS-1$
+        setSelectByPrimaryKeyStatementId("getByid"); //$NON-NLS-1$
         setUpdateByExampleStatementId("updateByExample"); //$NON-NLS-1$
         setUpdateByExampleSelectiveStatementId("updateByExampleSelective"); //$NON-NLS-1$
         setUpdateByExampleWithBLOBsStatementId("updateByExampleWithBLOBs"); //$NON-NLS-1$
-        setUpdateByPrimaryKeyStatementId("updateByPrimaryKey"); //$NON-NLS-1$
-        setUpdateByPrimaryKeySelectiveStatementId("updateByPrimaryKeySelective"); //$NON-NLS-1$
+        setUpdateByPrimaryKeyStatementId("updateById"); //$NON-NLS-1$
+        setUpdateByPrimaryKeySelectiveStatementId("updateByIdSelective"); //$NON-NLS-1$
         setUpdateByPrimaryKeyWithBLOBsStatementId("updateByPrimaryKeyWithBLOBs"); //$NON-NLS-1$
-        setBaseResultMapId("BaseResultMap"); //$NON-NLS-1$
+        setBaseResultMapId("ResultMap"); //$NON-NLS-1$
         setResultMapWithBLOBsId("ResultMapWithBLOBs"); //$NON-NLS-1$
         setExampleWhereClauseId("Example_Where_Clause"); //$NON-NLS-1$
-        setBaseColumnListId("Base_Column_List"); //$NON-NLS-1$
+        setBaseColumnListId("allColumns"); //$NON-NLS-1$
         setBlobColumnListId("Blob_Column_List"); //$NON-NLS-1$
         setMyBatis3UpdateByExampleWhereClauseId("Update_By_Example_Where_Clause"); //$NON-NLS-1$
+        setBatchInsertStatementId("batchInsert");
+        setBatchUpdateStatementId("batchUpdate");
+        setWhereClauseStatementId("whereAllConditions");
     }
 
     public void setBlobColumnListId(String s) {
@@ -1080,7 +1093,29 @@ public abstract class IntrospectedTable {
     public void setMyBatisDynamicSqlSupportType(String s) {
         internalAttributes.put(InternalAttribute.ATTR_MYBATIS_DYNAMIC_SQL_SUPPORT_TYPE, s);
     }
-    
+    public String getBatchInsertStatementId() {
+        return internalAttributes.get(InternalAttribute.ATTR_BATCH_INSERT_STATEMENT_ID);
+    }
+
+    public void setBatchUpdateStatementId(String s) {
+        internalAttributes.put(InternalAttribute.ATTR_BATCH_UPDATE_STATEMENT_ID, s);
+    }
+    public String getBatchUpdateStatementId() {
+        return internalAttributes.get(InternalAttribute.ATTR_BATCH_UPDATE_STATEMENT_ID);
+    }
+
+    public void setBatchInsertStatementId(String s) {
+        internalAttributes.put(InternalAttribute.ATTR_MYBATIS_DYNAMIC_SQL_SUPPORT_TYPE, s);
+    }
+
+    public String getWhereClauseStatementId() {
+        return internalAttributes.get(InternalAttribute.ATTR_WHERE_CLAUSE_STATEMENT_ID);
+    }
+
+    public void setWhereClauseStatementId(String s) {
+        internalAttributes.put(InternalAttribute.ATTR_WHERE_CLAUSE_STATEMENT_ID, s);
+    }
+
     public TargetRuntime getTargetRuntime() {
         return targetRuntime;
     }
